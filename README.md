@@ -26,6 +26,10 @@ Conformément à la littérature épidémiologique et aux exigences cliniques, l
 * **Activité sexuelle :** Dichotomisation du nombre de partenaires au cours du dernier mois selon la médiane pour séparer les profils "peu actifs" et "très actifs".
 * **Encodage catégoriel :** Création de variables *dummies* pour l'état civil et la raison de la visite (avec exclusion de la première modalité pour éviter le piège de la multicolinéarité parfaite).
 
+
+![Analyse exploratoire des données](AED.png)
+
+
 ---
 
 ## 🧠 Approche Méthodologique & Choix des Modèles
