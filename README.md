@@ -106,6 +106,8 @@ Lancez le script principal pour générer les analyses graphiques, les rapports 
 
 python gono_analysis.py
 
+```
+
 Dépendances principales
 pandas & numpy : Nettoyage et manipulation des données
 matplotlib & seaborn : Visualisation (AED, Courbes ROC)
