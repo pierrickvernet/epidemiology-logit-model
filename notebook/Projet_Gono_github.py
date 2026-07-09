@@ -126,7 +126,10 @@ for i, col in enumerate(cols_to_plot):
     plt.ylabel("Effectif")
 
 plt.tight_layout()
+plt.savefig('images/AED.png', dpi=300, bbox_inches='tight')
 plt.show()
+
+
 
 # 2. Analyse des corrélations avec clustering hiérarchique (Dendrogramme)
 corr_matrix = df_dummy.corr()
@@ -141,6 +144,7 @@ cluster_map = sns.clustermap(
 )
 plt.setp(cluster_map.ax_heatmap.get_xticklabels(), rotation=45, ha='right')
 plt.suptitle("Clustering hiérarchique des variables de risque", y=1.02)
+plt.savefig('images/MAT.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 
@@ -176,7 +180,7 @@ y_initial = df_dummy['DIAGNOSTIC_GONORRHEE']
 
 # ---- CHOIX DU MODÈLE : RÉGRESSION LOGISTIQUE & NAIVE BAYES ----
 
-# 1. Fonction stepwise backward selection
+# 1. Fonction stepwise backward selection corrigée (ajoute 'const' à chaque itération)
 def backward_selection(X, y, threshold_out=0.05):
     features = list(X.columns)
     while len(features) > 0:
@@ -250,6 +254,7 @@ ax[1].set_title('Comparaison des Performances Cliniques')
 ax[1].set_ylim(0, 1)
 
 plt.tight_layout()
+plt.savefig('images/ROC.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 # 5. Affichage du tableau de synthèse
