@@ -97,29 +97,3 @@ Toutes les variables retenues sont extrêmement significatives ($p < 0.001$). L'
 Le modèle démontre mathématiquement que les facteurs de structure (état civil, motifs de visite secondaires) s'effacent statistiquement devant ces trois critères comportementaux majeurs. Un dépistage proactif est fortement recommandé dès la présence de deux de ces facteurs.
 
 ---
-
-## 🛠️ Installation et Utilisation
-
-### Prérequis
-Assurez-vous d'avoir Python 3.8+ installé. Les dépendances nécessaires sont listées dans le fichier `requirements.txt`.
-
-```bash
-pip install -r requirements.txt
-
-Exécution du projet
-Placez votre fichier de données sous le nom gono.csv dans le même répertoire que le script.
-Lancez le script principal pour générer les analyses graphiques, les rapports de validation croisée et la table finale des Odds Ratios :
-
-python gono_analysis.py
-
-```
-
-Dépendances principales
-pandas & numpy : Nettoyage et manipulation des données
-matplotlib & seaborn : Visualisation (AED, Courbes ROC)
-scikit-learn : Validation croisée et métriques d'évaluation
-imbalanced-learn : Gestion du déséquilibre des classes sans fuite de données
-statsmodels : Estimation fine de la régression logistique et calcul des p-values
-
-
-
