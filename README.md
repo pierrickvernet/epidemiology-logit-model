@@ -43,11 +43,37 @@ Le fort déséquilibre initial de la variable cible nécessite un rééquilibrag
 
 ## 📈 Résultats et Sélection Finale
 
-Les performances intrinsèques des deux modèles sont évaluées et comparées à l'aide de courbes ROC, de l'Aire Sous la Courbe (AUC) ainsi que de la sensibilité (Recall) — métrique cruciale en épidémiologie où l'on cherche à minimiser à tout prix les faux négatifs.
+### Comparaison des Modèles (Validation Croisée 10-Fold)
+Les performances intrinsèques des deux modèles affichent une capacité prédictive similaire ($AUC \approx 0.65$) :
 
-**Le choix final s'est porté sur la Régression Logistique** pour deux raisons :
-* **Performances équivalentes :** Les deux modèles affichent une capacité prédictive similaire ($AUC \approx 0.65$). La régression logistique permet d'ajuster finement le seuil de décision pour maximiser la sensibilité clinique si nécessaire.
-* **Interprétabilité clinique majeure :** Contrairement au Naive Bayes ou aux modèles "boîte noire", la régression logistique permet d'extraire les **Odds Ratios (OR)** et leurs intervalles de confiance à 95 %. Cela permet de quantifier précisément l'impact de chaque facteur sur l'augmentation du risque.
+| Modèle | AUC | Exactitude (Accuracy) | Sensibilité (Recall) | Spécificité |
+| :--- | :---: | :---: | :---: | :---: |
+| **Régression Logistique** | 0.6478 | 0.6104 | 0.6090 | 0.6108 |
+| **Naive Bayes** | 0.6490 | 0.6040 | 0.6294 | 0.5951 |
+
+Le choix final s'est porté sur la **Régression Logistique** car elle offre une **interprétabilité clinique majeure**. Contrairement au Naive Bayes ou aux modèles "boîte noire", elle permet d'extraire l'impact mathématique direct de chaque variable sous forme d'Odds Ratios.
+
+### Équation du Modèle Final
+Suite à une sélection descendante (*Backward Stepwise Elimination* au seuil $\alpha = 5\%$), le modèle logistique final retient 3 variables hautement significatives. 
+
+La probabilité $P$ qu'un patient présente un diagnostic positif à la gonorrhée est modélisée selon l'équation suivante :
+
+$$P(\text{DIAGNOSTIC\_GONORRHEE} = 1) = \frac{1}{1 + e^{-z}}$$
+
+Où le score linéaire $z$ est défini par :
+
+$$z = -0.9589 + 0.7355 \times \text{ORIENTATION\_HOMOSEXUELLE} + 0.6258 \times \text{PARTENAIRES\_NOMBRE\_ELEVE} + 0.4283 \times \text{AGE\_MOINS\_30}$$
+
+### Coefficients Statistiques et Odds Ratios (OR)
+
+Voici les résultats détaillés de l'estimation sur l'échantillon balancé (1 376 observations) :
+
+| Variable Explicative | Coefficient ($\beta$) | Erreur Type | Statistique $z$ | $P > \|z\|$ | Odds Ratio (OR) | IC à 95% (OR) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Intercept (const)** | -0.9589 | 0.126 | -7.632 | < 0.001 | 0.3833 | [0.300 ; 0.490] |
+| **ORIENTATION_HOMOSEXUELLE** | 0.7355 | 0.122 | 6.026 | < 0.001 | 2.0865 | [1.643 ; 2.650] |
+| **PARTENAIRES_NOMBRE_ELEVE** | 0.6258 | 0.122 | 5.148 | < 0.001 | 1.8698 | [1.473 ; 2.373] |
+| **AGE_MOINS_30** | 0.4283 | 0.117 | 3.654 | < 0.001 | 1.5346 | [1.220 ; 1.931] |
 
 ---
 
