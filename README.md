@@ -41,6 +41,8 @@ Le fort déséquilibre initial de la variable cible nécessite un rééquilibrag
 
 ---
 
+
+
 ## 📈 Résultats et Sélection Finale
 
 ### Comparaison des Modèles (Validation Croisée 10-Fold)
@@ -53,6 +55,7 @@ Les performances intrinsèques des deux modèles affichent une capacité prédic
 
 Le choix final s'est porté sur la **Régression Logistique** car elle offre une **interprétabilité clinique majeure**. Contrairement au Naive Bayes ou aux modèles "boîte noire", elle permet d'extraire l'impact mathématique direct de chaque variable sous forme d'Odds Ratios.
 
+
 ### Équation du Modèle Final
 Suite à une sélection descendante (*Backward Stepwise Elimination* au seuil $\alpha = 5\%$), le modèle logistique final retient 3 variables hautement significatives. 
 
@@ -63,6 +66,8 @@ $$P(\text{DIAGNOSTIC\_GONORRHEE} = 1) = \frac{1}{1 + e^{-z}}$$
 Où le score linéaire $z$ est défini par :
 
 $$z = -0.9589 + 0.7355 \times \text{ORIENTATION\_HOMOSEXUELLE} + 0.6258 \times \text{PARTENAIRES\_NOMBRE\_ELEVE} + 0.4283 \times \text{AGE\_MOINS\_30}$$
+
+
 
 ### Coefficients Statistiques et Odds Ratios (OR)
 
