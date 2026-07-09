@@ -56,13 +56,18 @@ Le choix final s'est porté sur la **Régression Logistique** car elle offre une
 ### Équation du Modèle Final
 Suite à une sélection descendante (*Backward Stepwise Elimination* au seuil $\alpha = 5\%$), le modèle logistique final retient 3 variables hautement significatives. 
 
-La probabilité $P$ qu'un patient présente un diagnostic positif à la gonorrhée est modélisée selon l'équation suivante :
+La probabilité $P$ d'obtenir un diagnostic positif est définie par la fonction sigmoïde :
 
-$$P(\text{DIAGNOSTIC\_GONORRHEE} = 1) = \frac{1}{1 + e^{-z}}$$
+$$P = \frac{1}{1 + e^{-z}}$$
 
-Où le score linéaire $z$ est défini par :
+Où le score linéaire (ou log-odds) $z$ est calculé à partir des coefficients estimés :
 
-$$z = -0.9589 + 0.7355 \times \text{ORIENTATION\_HOMOSEXUELLE} + 0.6258 \times \text{PARTENAIRES\_NOMBRE\_ELEVE} + 0.4283 \times \text{AGE\_MOINS\_30}$$
+$$z = -0.9589 + 0.7355 \cdot X_1 + 0.6258 \cdot X_2 + 0.4283 \cdot X_3$$
+
+Avec les variables indicatrices suivantes :
+* $X_1$ : ORIENTATION_HOMOSEXUELLE (1 si Oui, 0 sinon)
+* $X_2$ : PARTENAIRES_NOMBRE_ELEVE (1 si Supérieur à la médiane, 0 sinon)
+* $X_3$ : AGE_MOINS_30 (1 si Moins de 30 ans, 0 si 30 ans et plus)
 
 ### Coefficients Statistiques et Odds Ratios (OR)
 
