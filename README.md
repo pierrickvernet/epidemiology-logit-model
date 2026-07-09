@@ -41,7 +41,7 @@ Le fort déséquilibre initial de la variable cible nécessite un rééquilibrag
 
 ![Analyse exploratoire des données](images/AED.png)
 
-![Matrice de corrélation avec clustering](MAT.png)
+![Matrice de corrélation avec clustering](images/MAT.png)
 
 ---
 
@@ -57,7 +57,7 @@ Les performances intrinsèques des deux modèles affichent une capacité prédic
 
 Le choix final s'est porté sur la **Régression Logistique** car elle offre une **interprétabilité clinique majeure**. Contrairement au Naive Bayes ou aux modèles "boîte noire", elle permet d'extraire l'impact mathématique direct de chaque variable sous forme d'Odds Ratios.
 
-![Perforamnce des modèles](ROC.png)
+![Perforamnce des modèles](images/ROC.png)
 
 ### Équation du Modèle Final
 Suite à une sélection descendante (*Backward Stepwise Elimination* au seuil $\alpha = 5\%$), le modèle logistique final retient 3 variables hautement significatives. 
