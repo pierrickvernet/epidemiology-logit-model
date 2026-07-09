@@ -26,10 +26,6 @@ Conformément à la littérature épidémiologique et aux exigences cliniques, l
 * **Activité sexuelle :** Dichotomisation du nombre de partenaires au cours du dernier mois selon la médiane pour séparer les profils "peu actifs" et "très actifs".
 * **Encodage catégoriel :** Création de variables *dummies* pour l'état civil et la raison de la visite (avec exclusion de la première modalité pour éviter le piège de la multicolinéarité parfaite).
 
-
-![Analyse exploratoire des données](AED.png)
-
-
 ---
 
 ## 🧠 Approche Méthodologique & Choix des Modèles
@@ -42,6 +38,8 @@ Pour répondre au besoin de caractérisation, deux modèles adaptés aux feature
 
 ### ⚠️ Protection contre le Data Leakage
 Le fort déséquilibre initial de la variable cible nécessite un rééquilibrage par sous-échantillonnage (**Undersampling**). Afin d'éviter tout phénomène de *Data Leakage* (fuite d'information qui biaiserait les métriques d'évaluation), l'algorithme `RandomUnderSampler` est encapsulé directement au sein d'un `Pipeline` de calcul. Ainsi, **le rééquilibrage n'est appliqué que sur les plis d'entraînement** de la validation croisée, laissant les plis de test totalement inchangés (688 cas positifs vs 688 cas négatifs par pli d'ajustement).
+
+![Analyse exploratoire des données](AED.png)
 
 ---
 
