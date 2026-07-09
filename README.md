@@ -32,7 +32,7 @@ Conformément à la littérature épidémiologique et aux exigences cliniques, l
 
 <img src="images/AED.png" width="600" alt="Analyse exploratoire des données">
 
-Une Analyse Exploratoire des Données (AED) par **clustering hiérarchique (dendrogramme)** a mis en évidence un fort déséquilibre des classes (les diagnostics positifs étant minoritaires) ainsi que des redondances évidentes (corrélation parfaite entre la raison de la visite pour contact et l'existence d'un contact contaminé). Les variables redondantes ont été écartées avant la modélisation.
+L'Analyse Exploratoire des Données a mis en évidence un fort déséquilibre des classes (les diagnostics positifs étant minoritaires) ainsi que des redondances évidentes (corrélation parfaite entre la raison de la visite pour contact et l'existence d'un contact contaminé). Les variables redondantes ont été écartées avant la modélisation.
 
 <img src="images/MAT.png" width="800" alt="Matrice de corrélation avec clustering">
 
