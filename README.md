@@ -10,14 +10,14 @@ La gonorrhée a été choisie comme indicateur clé car elle constitue la seule 
 ---
 
 ## 📊 Données et Prétraitement
-Le projet s'appuie sur le fichier de données anonymisées `gono.csv`, qui recense les patients examinés dans le cadre du programme. 
+Le projet s'appuie sur le fichier de données anonymisées `gono.csv`, qui recense initialement 3 144 patients examinés dans le cadre du programme.
 
 ### Nettoyage et Gestion des Valeurs Manquantes
 Le script intègre un protocole strict de nettoyage pour traiter les données manquantes (codées spécifiquement selon le protocole de l'enquête) :
 * **Blancs :** Convertis systématiquement en valeurs manquantes (`NaN`).
 * **Code `9` :** Considéré comme manquant pour les variables d'état civil, d'orientation sexuelle, d'antécédents et de diagnostic.
 * **Code `99` :** Considéré comme manquant pour l'âge et le nombre de partenaires.
-* **Élagage :** Suppression de la colonne `ID` (non prédictive) et élimination des lignes incomplètes par `dropna()`.
+* **Élagage :** Suppression de la colonne `ID` (non prédictive) et élimination des lignes incomplètes par `dropna()`. L'échantillon final nettoyé comprend **2 664 observations**.
 
 ### Ingénierie des Variables (Feature Engineering)
 Conformément à la littérature épidémiologique et aux exigences cliniques, les transformations suivantes ont été appliquées :
@@ -37,11 +37,9 @@ Pour répondre au besoin de caractérisation, deux modèles adaptés aux feature
 2. **Classifieur Naive Bayes de Bernoulli**
 
 ### ⚠️ Protection contre le Data Leakage
-Le fort déséquilibre initial de la variable cible nécessite un rééquilibrage par sous-échantillonnage (**Undersampling**). Afin d'éviter tout phénomène de *Data Leakage* (fuite d'information qui biaiserait les métriques d'évaluation), l'algorithme `RandomUnderSampler` est encapsulé directement au sein d'un `Pipeline` de calcul. Ainsi, **le rééquilibrage n'est appliqué que sur les plis d'entraînement** de la validation croisée, laissant les plis de test totalement inchangés.
+Le fort déséquilibre initial de la variable cible nécessite un rééquilibrage par sous-échantillonnage (**Undersampling**). Afin d'éviter tout phénomène de *Data Leakage* (fuite d'information qui biaiserait les métriques d'évaluation), l'algorithme `RandomUnderSampler` est encapsulé directement au sein d'un `Pipeline` de calcul. Ainsi, **le rééquilibrage n'est appliqué que sur les plis d'entraînement** de la validation croisée, laissant les plis de test totalement inchangés (688 cas positifs vs 688 cas négatifs par pli d'ajustement).
 
 ---
-
-
 
 ## 📈 Résultats et Sélection Finale
 
@@ -55,7 +53,6 @@ Les performances intrinsèques des deux modèles affichent une capacité prédic
 
 Le choix final s'est porté sur la **Régression Logistique** car elle offre une **interprétabilité clinique majeure**. Contrairement au Naive Bayes ou aux modèles "boîte noire", elle permet d'extraire l'impact mathématique direct de chaque variable sous forme d'Odds Ratios.
 
-
 ### Équation du Modèle Final
 Suite à une sélection descendante (*Backward Stepwise Elimination* au seuil $\alpha = 5\%$), le modèle logistique final retient 3 variables hautement significatives. 
 
@@ -66,7 +63,6 @@ $$P(\text{DIAGNOSTIC\_GONORRHEE} = 1) = \frac{1}{1 + e^{-z}}$$
 Où le score linéaire $z$ est défini par :
 
 $$z = -0.9589 + 0.7355 \times \text{ORIENTATION\_HOMOSEXUELLE} + 0.6258 \times \text{PARTENAIRES\_NOMBRE\_ELEVE} + 0.4283 \times \text{AGE\_MOINS\_30}$$
-
 
 ### Coefficients Statistiques et Odds Ratios (OR)
 
@@ -82,13 +78,12 @@ Voici les résultats détaillés de l'estimation sur l'échantillon balancé (1 
 ---
 
 ## 🚀 Recommandations Cliniques (Synthèse)
-L'analyse finale des coefficients du modèle permet d'isoler le profil typique sur lequel le médecin de famille doit appliquer une vigilance maximale ("Alerte Rouge") :
-* **Homme**
-* **Moins de 30 ans**
-* **Orientation homosexuelle**
-* **Nombre de partenaires élevé (supérieur à la médiane)**
+Toutes les variables retenues sont extrêmement significatives ($p < 0.001$). L'analyse des Odds Ratios permet d'isoler le profil typique sur lequel le médecin de famille doit appliquer une vigilance maximale :
+* **Orientation Homosexuelle (OR = 2.09) :** À caractéristiques égales, un patient homosexuel a **2,09 fois plus de chances** de présenter un diagnostic positif qu'un patient hétérosexuel.
+* **Nombre de Partenaires Élevé (OR = 1.87) :** Un patient ayant une activité sexuelle supérieure à la médiane a **1,87 fois plus de chances** d'être contaminé.
+* **Âge Moins de 30 Ans (OR = 1.53) :** Les moins de 30 ans présentent un risque accru de **53%** par rapport aux patients plus âgés.
 
-Le modèle démontre que le personnel soignant ne doit pas se laisser rassurer par des facteurs comme un statut marié ou une visite dite "asymptomatique" si les critères majeurs ci-dessus sont réunis. Un dépistage proactif est fortement recommandé dès la présence de deux de ces facteurs.
+Le modèle démontre mathématiquement que les facteurs de structure (état civil, motifs de visite secondaires) s'effacent statistiquement devant ces trois critères comportementaux majeurs. Un dépistage proactif est fortement recommandé dès la présence de deux de ces facteurs.
 
 ---
 
