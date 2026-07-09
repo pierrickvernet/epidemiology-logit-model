@@ -68,7 +68,6 @@ Où le score linéaire $z$ est défini par :
 $$z = -0.9589 + 0.7355 \times \text{ORIENTATION\_HOMOSEXUELLE} + 0.6258 \times \text{PARTENAIRES\_NOMBRE\_ELEVE} + 0.4283 \times \text{AGE\_MOINS\_30}$$
 
 
-
 ### Coefficients Statistiques et Odds Ratios (OR)
 
 Voici les résultats détaillés de l'estimation sur l'échantillon balancé (1 376 observations) :
