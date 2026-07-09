@@ -30,7 +30,11 @@ Conformément à la littérature épidémiologique et aux exigences cliniques, l
 
 ## 🧠 Approche Méthodologique & Choix des Modèles
 
+<img src="images/AED.png" width="600" alt="Analyse exploratoire des données">
+
 Une Analyse Exploratoire des Données (AED) par **clustering hiérarchique (dendrogramme)** a mis en évidence un fort déséquilibre des classes (les diagnostics positifs étant minoritaires) ainsi que des redondances évidentes (corrélation parfaite entre la raison de la visite pour contact et l'existence d'un contact contaminé). Les variables redondantes ont été écartées avant la modélisation.
+
+<img src="images/MAT.png" width="800" alt="Matrice de corrélation avec clustering">
 
 Pour répondre au besoin de caractérisation, deux modèles adaptés aux features binaires ont été mis en compétition via une **validation croisée stratifiée à 10 plis (Stratified 10-Fold CV)** :
 1. **Régression Logistique**
@@ -38,10 +42,6 @@ Pour répondre au besoin de caractérisation, deux modèles adaptés aux feature
 
 ### ⚠️ Protection contre le Data Leakage
 Le fort déséquilibre initial de la variable cible nécessite un rééquilibrage par sous-échantillonnage (**Undersampling**). Afin d'éviter tout phénomène de *Data Leakage* (fuite d'information qui biaiserait les métriques d'évaluation), l'algorithme `RandomUnderSampler` est encapsulé directement au sein d'un `Pipeline` de calcul. Ainsi, **le rééquilibrage n'est appliqué que sur les plis d'entraînement** de la validation croisée, laissant les plis de test totalement inchangés (688 cas positifs vs 688 cas négatifs par pli d'ajustement).
-
-<img src="images/AED.png" width="600" alt="Analyse exploratoire des données">
-
-<img src="images/MAT.png" width="800" alt="Matrice de corrélation avec clustering">
 
 ---
 
