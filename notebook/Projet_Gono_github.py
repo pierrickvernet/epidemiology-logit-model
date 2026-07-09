@@ -176,7 +176,7 @@ y_initial = df_dummy['DIAGNOSTIC_GONORRHEE']
 
 # ---- CHOIX DU MODÈLE : RÉGRESSION LOGISTIQUE & NAIVE BAYES ----
 
-# 1. Fonction stepwise backward selection corrigée (ajoute 'const' à chaque itération)
+# 1. Fonction stepwise backward selection
 def backward_selection(X, y, threshold_out=0.05):
     features = list(X.columns)
     while len(features) > 0:
