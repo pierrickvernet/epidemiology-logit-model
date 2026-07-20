@@ -9,7 +9,7 @@ Projet de modélisation statistique et d'épidémiologie quantitative réalisé 
 Le dépistage des Infections Transmissibles Sexuellement (ITS / MTS) représente un défi stratégique majeur. Face à la réticence de certaines populations à fréquenter des cliniques spécialisées, l'objectif est d'intégrer le dépistage au sein des consultations privées de médecine générale en tirant parti du réseau de laboratoires des grands centres hospitaliers. La gonorrhée sert ici d'indicateur épidémiologique clé, s'agissant de la seule ITS commune détectable par culture bactériologique de laboratoire standard.
 
 ### Intérêt et cas d'usage
-Définir et caractériser précisément les groupes cibles à haut risque pour la gonorrhée. L'identification des facteurs de risque les plus discriminants permet d'optimiser l'allocation des ressources de santé publique et de cibler prioritairement les territoires et profils sociaux où déployer les programmes de formation médicale.
+Définir et caractériser précisément les groupes cibles à haut risque pour la gonorrhée afin de fournir aux médecins de famille des signaux d'alerte clairs pour identifier rapidement les patients à risque lors des consultations de routine. L'identification des facteurs les plus discriminants permet également d'optimiser l'allocation des ressources de santé publique et de cibler prioritairement les territoires et profils sociaux où déployer les programmes de formation médicale.
 
 ---
 
