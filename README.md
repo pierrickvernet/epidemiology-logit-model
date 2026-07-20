@@ -3,7 +3,7 @@
 ## 1. INTRODUCTION
 
 ### Cadre de réalisation
-Projet de modélisation statistique et d'épidémiologie quantitative réalisé dans le cadre d'un programme de formation en santé publique destiné aux médecins de famille.
+Projet de modélisation statistique et d'épidémiologie quantitative réalisé dans le cadre de mon master 1 IREF.
 
 ### Présentation du sujet
 Le dépistage des Infections Transmissibles Sexuellement (ITS / MTS) représente un défi stratégique majeur. Face à la réticence de certaines populations à fréquenter des cliniques spécialisées, l'objectif est d'intégrer le dépistage au sein des consultations privées de médecine générale en tirant parti du réseau de laboratoires des grands centres hospitaliers. La gonorrhée sert ici d'indicateur épidémiologique clé, s'agissant de la seule ITS commune détectable par culture bactériologique de laboratoire standard.
