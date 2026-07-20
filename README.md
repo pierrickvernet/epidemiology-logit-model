@@ -68,7 +68,11 @@ L'équation du score linéaire (log-odds $z$) s'établit comme suit :
 
 $$z = -0,9589 + 0,7355 \cdot X_1 + 0,6258 \cdot X_2 + 0,4283 \cdot X_3$$
 
-Où la probabilité $P$ d'un diagnostic positif est donnée par $P = \frac{1}{1 + e^{-z}}$, avec :
+Où la probabilité $P$ d'un diagnostic positif est donnée par:
+
+$$P = \frac{1}{1 + e^{-z}}$$ 
+
+Avec :
 - $X_1$ : Orientation homosexuelle (1 si Oui, 0 sinon)
 - $X_2$ : Nombre élevé de partenaires (1 si supérieur à la médiane, 0 sinon)
 - $X_3$ : Âge inférieur à 30 ans (1 si $< 30$ ans, 0 sinon)
