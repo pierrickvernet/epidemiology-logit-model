@@ -1,99 +1,114 @@
 # Modèle de Prédiction et de Caractérisation des Groupes à Risque de la Gonorrhée (Projet GONO)
 
-## 📌 Présentation du Projet
-Le dépistage des Maladies Transmises Sexuellement (MTS) représente un défi stratégique majeur en santé publique. Face à la réticence de certaines populations à se rendre dans des cliniques spécialisées, ce projet s'inscrit dans le cadre d'un **programme de formation destiné aux médecins de famille**. En leur permettant d'utiliser gratuitement les laboratoires des grands centres hospitaliers, ce programme vise à intégrer le dépistage directement au sein des consultations de pratique privée.
+## 1. INTRODUCTION
 
-L'objectif principal de ce projet est de **définir et caractériser précisément les groupes cibles à haut risque** pour la gonorrhée. En identifiant les facteurs de risque discriminants, l'étude permet de cibler efficacement les milieux géographiques et sociaux où former les médecins généralistes.
+### Cadre de réalisation
+Projet de modélisation statistique et d'épidémiologie quantitative réalisé dans le cadre d'un programme de formation en santé publique destiné aux médecins de famille.
 
-La gonorrhée a été choisie comme indicateur clé car elle constitue la seule MTS commune dépistée efficacement par un simple test de laboratoire sur culture.
+### Présentation du sujet
+Le dépistage des Infections Transmissibles Sexuellement (ITS / MTS) représente un défi stratégique majeur. Face à la réticence de certaines populations à fréquenter des cliniques spécialisées, l'objectif est d'intégrer le dépistage au sein des consultations privées de médecine générale en tirant parti du réseau de laboratoires des grands centres hospitaliers. La gonorrhée sert ici d'indicateur épidémiologique clé, s'agissant de la seule ITS commune détectable par culture bactériologique de laboratoire standard.
 
----
-
-## 📊 Données et Prétraitement
-Le projet s'appuie sur le fichier de données anonymisées `gono.csv`, qui recense initialement 3 144 patients examinés dans le cadre du programme.
-
-### Nettoyage et Gestion des Valeurs Manquantes
-Le script intègre un protocole strict de nettoyage pour traiter les données manquantes (codées spécifiquement selon le protocole de l'enquête) :
-* **Blancs :** Convertis systématiquement en valeurs manquantes (`NaN`).
-* **Code `9` :** Considéré comme manquant pour les variables d'état civil, d'orientation sexuelle, d'antécédents et de diagnostic.
-* **Code `99` :** Considéré comme manquant pour l'âge et le nombre de partenaires.
-* **Élagage :** Suppression de la colonne `ID` (non prédictive) et élimination des lignes incomplètes par `dropna()`. L'échantillon final nettoyé comprend **2 664 observations**.
-
-### Ingénierie des Variables (Feature Engineering)
-Conformément à la littérature épidémiologique et aux exigences cliniques, les transformations suivantes ont été appliquées :
-* **Dichotomisation de l'âge :** Séparation en deux groupes (Moins de 30 ans / 30 ans et plus).
-* **Antécédents de MTS :** Transformation en variable binaire (Déjà contracté / Jamais contracté).
-* **Activité sexuelle :** Dichotomisation du nombre de partenaires au cours du dernier mois selon la médiane pour séparer les profils "peu actifs" et "très actifs".
-* **Encodage catégoriel :** Création de variables *dummies* pour l'état civil et la raison de la visite (avec exclusion de la première modalité pour éviter le piège de la multicolinéarité parfaite).
+### Intérêt et cas d'usage
+Définir et caractériser précisément les groupes cibles à haut risque pour la gonorrhée. L'identification des facteurs de risque les plus discriminants permet d'optimiser l'allocation des ressources de santé publique et de cibler prioritairement les territoires et profils sociaux où déployer les programmes de formation médicale.
 
 ---
 
-## 🧠 Approche Méthodologique & Choix des Modèles
+## 2. SOURCES ET DONNÉES
 
-<img src="images/AED.png" width="600" alt="Analyse exploratoire des données">
+### Origine des données
+Fichier de données épidémiologiques anonymisées `gono.csv` comprenant initialement 3 144 patients examinés dans le cadre du programme de dépistage.
 
-L'Analyse Exploratoire des Données a mis en évidence un fort déséquilibre des classes (les diagnostics positifs étant minoritaires) ainsi que des redondances évidentes (corrélation parfaite entre la raison de la visite pour contact et l'existence d'un contact contaminé). Les variables redondantes ont été écartées avant la modélisation.
-
-<img src="images/MAT.png" width="800" alt="Matrice de corrélation avec clustering">
-
-Pour répondre au besoin de caractérisation, deux modèles adaptés aux features binaires ont été mis en compétition via une **validation croisée stratifiée à 10 plis (Stratified 10-Fold CV)** :
-1. **Régression Logistique**
-2. **Classifieur Naive Bayes de Bernoulli**
-
-### ⚠️ Protection contre le Data Leakage
-Le fort déséquilibre initial de la variable cible nécessite un rééquilibrage par sous-échantillonnage (**Undersampling**). Afin d'éviter tout phénomène de *Data Leakage* (fuite d'information qui biaiserait les métriques d'évaluation), l'algorithme `RandomUnderSampler` est encapsulé directement au sein d'un `Pipeline` de calcul. Ainsi, **le rééquilibrage n'est appliqué que sur les plis d'entraînement** de la validation croisée, laissant les plis de test totalement inchangés (688 cas positifs vs 688 cas négatifs par pli d'ajustement).
+### Périmètre et variables clés
+- **Variable cible :** Diagnostic de la gonorrhée (variable binaire : positif / négatif).
+- **Variables explicatives :** Données sociodémographiques (âge, état civil), comportementales (orientation sexuelle, nombre de partenaires sexuels au cours du dernier mois), cliniques (antécédents d'ITS, motif de visite) et géographiques.
 
 ---
 
-## 📈 Résultats et Sélection Finale
+## 3. MÉTHODOLOGIE ET DÉTAILS TECHNIQUES
 
-### Comparaison des Modèles (Validation Croisée 10-Fold)
-Les performances intrinsèques des deux modèles affichent une capacité prédictive similaire ($AUC \approx 0.65$) :
+### Pipeline de traitement et Feature Engineering
+- **Nettoyage des données :** Conversion des espaces blancs en valeurs manquantes (`NaN`). Traitement des codes spécifiques d'enquête (code `9` pour l'état civil, l'orientation sexuelle, les antécédents et le diagnostic ; code `99` pour l'âge et le nombre de partenaires). Suppression des identifiants non prédictifs (`ID`) et élimination des observations incomplètes (*Listwise Deletion*), portant l'échantillon final nettoyé à **2 664 observations**.
+- **Ingénierie des caractéristiques :**
+  - Dichotomisation de l'âge (moins de 30 ans vs 30 ans et plus).
+  - Transformation des antécédents d'ITS en variable binaire.
+  - Binning du nombre de partenaires sexuels mensuels selon la médiane (profils peu actifs vs très actifs).
+  - Encodage catégoriel (*Dummy Encoding*) pour l'état civil et le motif de visite, avec omission de la catégorie de référence pour éviter le piège de la multicolinéarité parfaite.
+- **Analyse exploratoire et redondance :** Détection d'un déséquilibre de classe majeur et élimination des variables explicatives redondantes (ex: corrélation parfaite entre la visite pour contact et l'existence d'un contact contaminé avéré).
+
+### Prévention du Data Leakage et rééquilibrage
+Mise en place d'un sous-échantillonnage (*RandomUnderSampler*) directement encapsulé au sein d'un `Pipeline` scikit-learn. Cette approche garantit que le rééquilibrage n'est appliqué que sur les plis d'entraînement de la validation croisée, préservant l'étanchéité absolue des plis de test (688 cas positifs et 688 cas négatifs par pli d'ajustement).
+
+### Modélisation et sélection
+- **Validation croisée :** Validation croisée stratifiée à 10 blocs (*Stratified 10-Fold Cross-Validation*).
+- **Algorithmes évalués :** Régression logistique et Classifieur Naive Bayes de Bernoulli.
+- **Sélection de variables :** Élimination pas à pas descendante (*Backward Stepwise Elimination*) basée sur la statistique de Wald au seuil de significativité $\alpha = 5\%$.
+
+### Stack technologique
+- **Langage :** Python 3
+- **Traitement de données :** `pandas`, `numpy`
+- **Modélisation & Apprentissage :** `scikit-learn`, `statsmodels`, `imblearn` (`Pipeline`, `RandomUnderSampler`)
+- **Visualisation graphique :** `matplotlib`, `seaborn`
+
+---
+
+## 4. CONCLUSION ET RÉSULTATS CLÉS
+
+### Performances comparatives
+Évaluation des modèles en validation croisée à 10 blocs :
 
 | Modèle | AUC | Exactitude (Accuracy) | Sensibilité (Recall) | Spécificité |
 | :--- | :---: | :---: | :---: | :---: |
-| **Régression Logistique** | 0.6478 | 0.6104 | 0.6090 | 0.6108 |
-| **Naive Bayes** | 0.6490 | 0.6040 | 0.6294 | 0.5951 |
+| **Régression Logistique** | **0,6478** | **0,6104** | **0,6090** | **0,6108** |
+| **Naive Bayes de Bernoulli** | 0,6490 | 0,6040 | 0,6294 | 0,5951 |
 
-Le choix final s'est porté sur la **Régression Logistique** car elle offre une **interprétabilité clinique majeure**. Contrairement au Naive Bayes ou aux modèles "boîte noire", elle permet d'extraire l'impact mathématique direct de chaque variable sous forme d'Odds Ratios.
+### Modèle retenu et équation
+La **Régression Logistique** a été retenue pour sa grande interprétabilité clinique. Le modèle final ne conserve que trois variables comportementales et démographiques, toutes hautement significatives ($p < 0,001$).
 
-![Perforamnce des modèles](images/ROC.png)
+L'équation du score linéaire (log-odds $z$) s'établit comme suit :
 
-### Équation du Modèle Final
-Suite à une sélection descendante (*Backward Stepwise Elimination* au seuil $\alpha = 5\%$), le modèle logistique final retient 3 variables hautement significatives. 
+$$z = -0,9589 + 0,7355 \cdot X_1 + 0,6258 \cdot X_2 + 0,4283 \cdot X_3$$
 
-La probabilité $P$ d'obtenir un diagnostic positif est définie par la fonction sigmoïde :
+Où la probabilité $P$ d'un diagnostic positif est donnée par $P = \frac{1}{1 + e^{-z}}$, avec :
+- $X_1$ : Orientation homosexuelle (1 si Oui, 0 sinon)
+- $X_2$ : Nombre élevé de partenaires (1 si supérieur à la médiane, 0 sinon)
+- $X_3$ : Âge inférieur à 30 ans (1 si $< 30$ ans, 0 sinon)
 
-$$P = \frac{1}{1 + e^{-z}}$$
+### Interprétation des Odds Ratios (OR)
 
-Où le score linéaire (ou log-odds) $z$ est calculé à partir des coefficients estimés :
+Estimation sur l'échantillon rééquilibré (1 376 observations) :
 
-$$z = -0.9589 + 0.7355 \cdot X_1 + 0.6258 \cdot X_2 + 0.4283 \cdot X_3$$
-
-Avec les variables indicatrices suivantes :
-* $X_1$ : ORIENTATION_HOMOSEXUELLE (1 si Oui, 0 sinon)
-* $X_2$ : PARTENAIRES_NOMBRE_ELEVE (1 si Supérieur à la médiane, 0 sinon)
-* $X_3$ : AGE_MOINS_30 (1 si Moins de 30 ans, 0 si 30 ans et plus)
-
-### Coefficients Statistiques et Odds Ratios (OR)
-
-Voici les résultats détaillés de l'estimation sur l'échantillon balancé (1 376 observations) :
-
-| Variable Explicative | Coefficient ($\beta$) | Erreur Type | Statistique $z$ | $P > \|z\|$ | Odds Ratio (OR) | IC à 95% (OR) |
+| Variable Explicative | Coefficient ($\beta$) | Erreur Type | Statistique $z$ | $p$-value | Odds Ratio (OR) | IC à 95% (OR) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Intercept (const)** | -0.9589 | 0.126 | -7.632 | < 0.001 | 0.3833 | [0.300 ; 0.490] |
-| **ORIENTATION_HOMOSEXUELLE** | 0.7355 | 0.122 | 6.026 | < 0.001 | 2.0865 | [1.643 ; 2.650] |
-| **PARTENAIRES_NOMBRE_ELEVE** | 0.6258 | 0.122 | 5.148 | < 0.001 | 1.8698 | [1.473 ; 2.373] |
-| **AGE_MOINS_30** | 0.4283 | 0.117 | 3.654 | < 0.001 | 1.5346 | [1.220 ; 1.931] |
+| **Intercept (const)** | -0,9589 | 0,126 | -7,632 | $< 0,001$ | 0,3833 | [0,300 ; 0,490] |
+| **Orientation homosexuelle** | 0,7355 | 0,122 | 6,026 | $< 0,001$ | **2,0865** | [1,643 ; 2,650] |
+| **Partenaires (nombre élevé)** | 0,6258 | 0,122 | 5,148 | $< 0,001$ | **1,8698** | [1,473 ; 2,373] |
+| **Âge moins de 30 ans** | 0,4283 | 0,117 | 3,654 | $< 0,001$ | **1,5346** | [1,220 ; 1,931] |
+
+### Recommandations cliniques et opérationnelles
+- **Orientation sexuelle (OR = 2,09) :** À caractéristiques égales, un patient homosexuel présente **2,09 fois plus de risques** d'être infecté qu'un patient hétérosexuel.
+- **Activité sexuelle (OR = 1,87) :** Un nombre de partenaires supérieur à la médiane multiplie le risque par **1,87**.
+- **Âge (OR = 1,53) :** Les patients de moins de 30 ans affichent un surrisque de **53 %** par rapport aux tranches plus âgées.
+- **Synthèse :** Les variables structurelles (état civil, motifs secondaires) s'effacent statistiquement devant ces trois déterminants comportementaux. Un dépistage ciblé et proactif est recommandé en médecine de ville dès la présence combinée de deux de ces facteurs.
+
+### Limites et perspectives
+- Tester l'ajout d'interactions d'ordre supérieur entre l'âge et les comportements sexuels.
+- Évaluer l'apport de modèles non linéaires ou d'arbres de décision pour capter des profils de risque plus complexes.
 
 ---
 
-## 🚀 Recommandations Cliniques (Synthèse)
-Toutes les variables retenues sont extrêmement significatives ($p < 0.001$). L'analyse des Odds Ratios permet d'isoler le profil typique sur lequel le médecin de famille doit appliquer une vigilance maximale :
-* **Orientation Homosexuelle (OR = 2.09) :** À caractéristiques égales, un patient homosexuel a **2,09 fois plus de chances** de présenter un diagnostic positif qu'un patient hétérosexuel.
-* **Nombre de Partenaires Élevé (OR = 1.87) :** Un patient ayant une activité sexuelle supérieure à la médiane a **1,87 fois plus de chances** d'être contaminé.
-* **Âge Moins de 30 Ans (OR = 1.53) :** Les moins de 30 ans présentent un risque accru de **53%** par rapport aux patients plus âgés.
+## 5. STRUCTURE DU DÉPÔT
 
-Le modèle démontre mathématiquement que les facteurs de structure (état civil, motifs de visite secondaires) s'effacent statistiquement devant ces trois critères comportementaux majeurs. Un dépistage proactif est fortement recommandé dès la présence de deux de ces facteurs.
+```text
+.
+├── data/
+│   └── gono.csv             # Jeu de données épidémiologique brut (3 144 observations)
+├── images/
+│   ├── AED.png              # Graphiques d'analyse exploratoire des données
+│   ├── MAT.png              # Matrice de corrélation avec clustering
+│   └── ROC.png              # Courbes ROC comparatives des modèles
+├── notebooks/
+│   └── gono_analysis.ipynb  # Notebook Jupyter contenant le pipeline complet
+└── README.md                # Documentation du projet
+```
 
 ---
