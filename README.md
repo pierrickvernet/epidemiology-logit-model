@@ -109,7 +109,7 @@ Estimation sur l'échantillon rééquilibré (1 376 observations) :
 │   ├── AED.png              # Graphiques d'analyse exploratoire des données
 │   ├── MAT.png              # Matrice de corrélation avec clustering
 │   └── ROC.png              # Courbes ROC comparatives des modèles
-├── projet_gono.ipynb      # Notebook Jupyter contenant le pipeline complet
+├── Projet_Gono.py      # Notebook Jupyter contenant le pipeline complet
 └── README.md                # Documentation du projet
 ```
 
