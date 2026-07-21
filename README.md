@@ -104,14 +104,12 @@ Estimation sur l'échantillon rééquilibré (1 376 observations) :
 
 ```text
 .
-├── data/
-│   └── gono.csv             # Jeu de données épidémiologique brut (3 144 observations)
+├── gono.csv                 # Jeu de données épidémiologique brut (3 144 observations)
 ├── images/
 │   ├── AED.png              # Graphiques d'analyse exploratoire des données
 │   ├── MAT.png              # Matrice de corrélation avec clustering
 │   └── ROC.png              # Courbes ROC comparatives des modèles
-├── notebooks/
-│   └── gono_analysis.ipynb  # Notebook Jupyter contenant le pipeline complet
+├── projet_gono.ipynb      # Notebook Jupyter contenant le pipeline complet
 └── README.md                # Documentation du projet
 ```
 
